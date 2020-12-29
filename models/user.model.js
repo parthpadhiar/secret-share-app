@@ -52,12 +52,12 @@ userSchema.pre("save", function (next) {
   if (user.isModified("password")) {
     bcrypt.genSalt(salt, function (err, salt) {
       if (err) {
-        log.error(`User is not added => ${err}`);
+        log.error(`User is not added =>: ${err}`);
         return next(err);
       }
       bcrypt.hash(user.password, salt, function (err, hash) {
         if (err) {
-          log.error(`User is not added user.password => ${err}`);
+          log.error(`User is not added user.password =>: ${err}`);
           return next(err);
         }
         log.info("User is added user.model");
@@ -74,10 +74,10 @@ userSchema.pre("save", function (next) {
 userSchema.methods.comparepassword = function (password, cb) {
   bcrypt.compare(password, this.password, function (err, isMatch) {
     if (err) {
-      log.error(`Password is not matched => ${err}`);
+      log.error(`Password is not matched =>: ${err}`);
       return cb(next);
     }
-    log.info(`Password is Matched ${isMatch}`);
+    log.info(`Password is Matched: ${isMatch}`);
     cb(null, isMatch);
   });
 };
@@ -90,10 +90,10 @@ userSchema.methods.generateToken = function (cb) {
   user.token = token;
   user.save(function (err, user) {
     if (err) {
-      log.error(`Token is not generated ${err}`);
+      log.error(`Token is not generated: ${err}`);
       return cb(err);
     }
-    log.info(`Token is generated for ${user}`);
+    log.info(`Token is generated for: ${user}`);
     cb(null, user);
   });
 };
@@ -104,7 +104,7 @@ userSchema.statics.findByToken = function (token, cb) {
   jwt.verify(token, config.SECRET, function (err, decode) {
     user.findOne({ _id: decode, token: token }, function (err, user) {
       if (err) {
-        log.error(`Token is not verify ${err}`);
+        log.error(`Token is not verify: ${err}`);
         return cb(err);
       }
       cb(null, user);
@@ -117,7 +117,7 @@ userSchema.methods.deleteToken = function (token, cb) {
   var user = this;
   user.update({ $unset: { token: 1 } }, function (err, user) {
     if (err) {
-      log.error(`Token is not deleted => ${err}`);
+      log.error(`Token is not deleted =>: ${err}`);
       return cb(err);
     }
     cb(null, user);
@@ -128,7 +128,6 @@ autoIncrement.initialize(mongoose.connection);
 userSchema.plugin(autoIncrement.plugin, {
   model: "User",
   field: "user_id",
-  startAt: 1,
   incrementBy: 1,
 });
 

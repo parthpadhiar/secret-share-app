@@ -9,6 +9,6 @@ exports.test = (req, res) => {
           res.send("Hello");
           return data.save();
     } catch (error) {
-        log.error(`Error in test fuction ${error}`);   
+        log.error(`Error in test fuction: ${error}`);   
     }
 }
