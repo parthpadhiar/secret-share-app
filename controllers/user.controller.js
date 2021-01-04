@@ -10,14 +10,14 @@ exports.welcome = (req, res) => {
   }
 };
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
   try {
     const newUser = new User(req.body);
     if (newUser.password != newUser.password2) {
       log.error(`Password and Confirm Password does not matched`);
       return res.status(400).json({ message: "Password not match" });
     }
-    User.findOne({ email: newUser.email }, (err, user) => {
+    await User.findOne({ email: newUser.email }, (err, user) => {
       if (user) {
         log.error(`Email is Exist: ${req.user.user_id}`);
         return res.status(400).json({ auth: false, message: "Email exits" });
@@ -39,7 +39,7 @@ exports.register = (req, res) => {
   }
 };
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   let token = req.cookies.auth;
   try {
     User.findByToken(token, (err, user) => {
@@ -92,7 +92,7 @@ exports.login = (req, res) => {
   }
 };
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
   try {
     req.user.deleteToken(req.token, (err, user) => {
       if (err) {
@@ -120,7 +120,7 @@ exports.profile = (req, res) => {
   });
 };
 
-exports.editProfile = (req, res) => {
+exports.editProfile = async (req, res) => {
   try {
     const user_id = req.user.user_id;
     const { firstname, lastname, privacy } = req.body;

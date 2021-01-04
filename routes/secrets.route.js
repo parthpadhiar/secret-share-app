@@ -4,10 +4,10 @@ const { auth } = require("../middlewares/auth");
 const secretController = require("../controllers/secrets.controller");
 
 const PATH = {
-  SHOW_ALL_SECRETS: "/api/secret/all",
-  ADD_SECRET: "/api/secret/add",
-  EDIT_SECRET: "/api/secret/edit/:secret_id",
-  DELETE_SECRET: "/api/secret/delete/:secret_id",
+  SHOW_ALL_SECRETS: "/all",
+  ADD_SECRET: "/add",
+  EDIT_SECRET: "/edit/:secret_id",
+  DELETE_SECRET: "/delete/:secret_id",
 };
 
 /**

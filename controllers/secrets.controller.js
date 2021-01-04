@@ -1,10 +1,10 @@
 const Secret = require("../models/secrets.model.js");
 const log = require("../constants/bunyan.constant");
 
-exports.showSecret = (req, res) => {
+exports.showSecret = async (req, res) => {
   try {
     const user_id = req.user.user_id;
-    Secret.findOne({ user_id: user_id }, (err, foundUserSecret) => {
+    await Secret.findOne({ user_id: user_id }, (err, foundUserSecret) => {
       if (foundUserSecret !== null) {
         Secret.find({ user_id: user_id }, (err, data) => {
           if (!err) {
@@ -31,14 +31,14 @@ exports.showSecret = (req, res) => {
   }
 };
 
-exports.addSecret = (req, res) => {
+exports.addSecret = async (req, res) => {
   try {
     const secret = req.body.secret;
     const addSecret = new Secret({
       user_id: req.user.user_id,
       secret: secret,
     });
-    addSecret.save((err, data) => {
+    await addSecret.save((err, data) => {
       if (err) {
         log.error(`Error in Adding Secret: ${err}`);
         return res.status(400).json({ message: "Error in Adding Secret" });
@@ -55,12 +55,12 @@ exports.addSecret = (req, res) => {
   }
 };
 
-exports.editSecret = (req, res) => {
+exports.editSecret = async (req, res) => {
   try {
     const user_id = req.user.user_id;
     const secret_id = req.params.secret_id;
     const secret = req.body.secret;
-    Secret.findOne({ secret_id: secret_id }, (err, foundSecret) => {
+    await Secret.findOne({ secret_id: secret_id }, (err, foundSecret) => {
       if (foundSecret !== null) {
         Secret.findOneAndUpdate(
           { user_id: user_id, secret_id: secret_id },
@@ -95,11 +95,11 @@ exports.editSecret = (req, res) => {
   }
 };
 
-exports.deleteSecret = (req, res) => {
+exports.deleteSecret = async (req, res) => {
   try {
     const user_id = req.user.user_id;
     const secret_id = req.params.secret_id;
-    Secret.findOne({ secret_id: secret_id }, (err, foundSecret) => {
+    await Secret.findOne({ secret_id: secret_id }, (err, foundSecret) => {
       if (foundSecret !== null) {
         Secret.findOneAndDelete(
           { user_id: user_id, secret_id: secret_id },

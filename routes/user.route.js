@@ -1,6 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 const { auth } = require("../middlewares/auth");
+const secretsRoute = require("./secrets.route");
 
 const userController = require("../controllers/user.controller.js");
 
@@ -10,7 +11,13 @@ const PATH = {
   PROFILE: "/api/profile",
   EDIT_PROFILE: "/api/edit_profile",
   LOGOUT: "/api/logout",
+  SECRET: "/api/secret"
 };
+
+/**
+ * Secrets Route
+ */
+routes.use(PATH.SECRET, secretsRoute)
 
 /**
  * {GET}

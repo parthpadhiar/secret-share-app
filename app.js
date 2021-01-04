@@ -6,6 +6,7 @@ const { PORT } = require("./constants/constant.js");
 const log = require('./constants/bunyan.constant')
 const userRoutes = require('./routes/user.route.js');
 const secretRoutes = require('./routes/secrets.route.js');
+const secretsTimelineRoutes = require('./routes/secretsTimeline.route');
 
 const cookieParser = require('cookie-parser');
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
  */
 app.use(userRoutes);
 app.use(secretRoutes);
+app.use(secretsTimelineRoutes)
 
 app.listen(PORT, () => {
   log.info(`Successfully connected to Port: ${PORT}`);
